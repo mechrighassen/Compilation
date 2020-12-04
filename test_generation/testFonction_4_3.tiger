@@ -1,0 +1,14 @@
+let
+
+    function recur(j:int): int=
+
+        if j<>0 then
+            recur(j-1)
+        else
+            22
+
+in 
+    recur(2)
+
+end
+

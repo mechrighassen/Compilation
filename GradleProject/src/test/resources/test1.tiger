@@ -1,0 +1,24 @@
+
+
+let
+
+ var total := 0
+ var i := 0
+ var n := 10
+ var testvar : int := 0
+ 
+in
+
+ testvar := i <= n ;
+ while testvar do
+ (
+ 	total := total + i * i ;
+ 	if i = 5 then
+ 		print (5) ;
+ 	testvar := i <= n
+ ) ;
+ 
+ print ( total )
+ 
+end
+

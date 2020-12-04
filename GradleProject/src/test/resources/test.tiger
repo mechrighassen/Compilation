@@ -1,0 +1,5 @@
+let
+var x := y.
+var z := 1
+in
+end

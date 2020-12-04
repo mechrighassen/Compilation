@@ -1,0 +1,33 @@
+let
+	type vector = { x : int , y : int }
+	type vectorArray = array of vector
+	type entier = array of int
+
+	var v1 := vector { x = 1 , y = 2}
+	var v2 := vector { x = 3 , y = 5}
+	var v3 := vector { x = 0 , y = 0}
+
+	var tabR := vectorArray [3] of nil
+	var tabI := entier [3] of 0
+
+	var sumx := 0
+	var sumy := 0
+	var sumI =0
+in
+	tabR[0]=v1;
+	tabR[1]=v2;
+	v3.x=v1.x+v2.x;
+	v3.y=v1.y+v2.y;
+	tabR[2]=v3;
+
+	tabI[0]=1;
+	tabI[1]=2;
+	tabI[2]=tabI[1]+tabI[0];
+
+	sumx=tabR[0].x+tabR[1].x+tabR[2].x;
+	sumy=tabR[0].y+tabR[1].y+tabR[2].y;
+	sumI=tabI[0]+tabI[1]+tabI[2];
+
+	printi(sumx+sumy+sumI)
+
+end

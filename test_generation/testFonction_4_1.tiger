@@ -1,0 +1,14 @@
+
+let
+    var m:=4
+
+    function a(): int =
+
+        m
+
+in 
+    a()
+
+end
+
+

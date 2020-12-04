@@ -1,0 +1,11 @@
+let
+    var a:=4
+
+    var b:= 6
+    var c:=8
+
+in 
+    printi(a>b | a-4=0 & b=6)
+end
+
+

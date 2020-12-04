@@ -1,0 +1,8 @@
+let
+var s : string := "ligne1\nligne2"
+in
+s := "A : \65";
+s := "Debut...\
+\...fin";
+s := "Et un quote \" "
+end

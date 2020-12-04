@@ -1,0 +1,23 @@
+let
+	type simpleRecord = {x:int , y:string}
+	type simpleArray = array of int
+	type recordOfArray ={a : simpleArray, x : int}
+	type recordOfRecord ={r : simpleRecord, z : int}
+
+	var sR := simpleRecord {x=1 , y="test"}
+	var rA := recordOfArray {a = simpleArray [3] of 1 , x = 1 }
+	var rR := recordOfRecord {r = simpleRecord {x = 4 , y = "test" }, z = 5}
+in
+	rA.a[0] := 0;
+	rA.a[1]:=1;
+	rA.a[2]:=2;
+	printi(sR.x);
+	print(sR.y);
+	printi(rA.a[0]);
+	printi(rA.a[1]);
+	printi(rA.a[2]);
+	printi(rA.x);
+	printi(rR.r.x);
+	print(rR.r.y);
+	printi(rR.z)
+end

@@ -1,0 +1,9 @@
+let
+    var a:=4
+
+    var b:= 6
+    var c:=8
+
+in 
+    printi(a*2<b & a-4=0 | b=6 & c/2=4 & c<>7)
+end

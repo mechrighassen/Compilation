@@ -1,0 +1,31 @@
+let
+    type vector = { x : int , y : int }
+    type data = { v : vector , to_add : int }
+    type dataArray = array of data
+
+    var d1 := data { v = vector { x = 0 , y = 0} , to_add = 1}
+    var d2 := data { v = vector { x = 1 , y = 1} , to_add = 1}
+    var d3 := data { v = vector { x = 2 , y = 2} , to_add = 0}
+    var d4 := data { v = vector { x = 3 , y = 4} , to_add = 1}
+
+    var l := dataArray [4] of nil
+    var result := vector {x = 0, y = 0}
+
+    function add_vectors ( l : dataArray , size : int , result : vector ) =
+        for i := 0 to size - 1 do
+            if l [ i ]. to_add then
+            (
+                result.x = result.x + l [ i ]. v . x ;
+                result.y  = result.y + l [ i ]. v . y
+            )
+in
+    l [0] := d1;
+    l[1] := d2;
+    l[2] :=  d3;
+    l[3]      := d4;
+
+    add_vectors(1,4, result);
+    print(result.x);
+    print(result.y)
+
+end

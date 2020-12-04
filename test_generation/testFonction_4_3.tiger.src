@@ -1,0 +1,172 @@
+org 0x2222
+start main_
+stackbase 0x1000
+SP equ R15
+BP equ R14
+UT equ R13
+TA equ R12
+STTA rsb 4000
+
+main_	LDW TA, #STTA
+LDW BP, SP
+LDW R0, #0
+STW R0, (SP)
+ADQ -2, SP
+STW R0, (SP)
+ADQ -2, SP
+
+
+LDW R0,#0
+SUB SP,R0,SP
+
+LDW R0, #2
+STW R0, (SP)
+ADQ -2, SP
+ADQ -4, SP
+LDW UT, BP
+STW UT, (SP)
+ADQ 4, SP
+ADQ 2, SP
+JSR @fun_recur_1
+ADQ -2, SP
+LDW UT, #2
+ADD UT, SP, SP
+
+LDW UT,#0
+ADD SP,UT,SP
+LDW SP, BP
+LDW BP, (SP)
+ADQ 2, SP
+LDQ 64,R14
+TRP R14
+fun_recur_1	ADQ -2, SP
+STW BP, (SP)
+LDW BP, SP
+ADQ -4, SP
+LDW R0, BP
+LDW UT, #4
+ADD R0, UT, UT
+LDW R0, (UT)
+STW R0, R1
+LDW R0, #0
+CMP R1, R0
+BNE 4
+LDQ 0, R0
+BMP 2
+LDQ 1, R0
+JEQ #ins_71 -$-2
+
+LDW R0, BP
+LDW UT, #4
+ADD R0, UT, UT
+LDW R0, (UT)
+LDW R1, R0
+LDW R0, #1
+SUB R1,R0, R0
+STW R0, (SP)
+ADQ -2, SP
+ADQ -4, SP
+LDW UT, BP
+ADQ -2, UT
+LDW UT, (UT)
+STW UT, (SP)
+ADQ 4, SP
+ADQ 2, SP
+JSR @fun_recur_1
+ADQ -2, SP
+LDW UT, #2
+ADD UT, SP, SP
+
+JMP #ins_72 -$-2
+ins_71	LDW R0, #22
+ins_72	ADQ 4, SP
+LDW BP, (SP)
+ADQ 2, SP
+RTS
+fun_print_0	ADQ -2, SP
+LDW UT, BP
+STW BP, (SP)
+ADQ -2, SP
+STW UT, (SP)
+ADQ -2, SP
+LDW UT, #4
+ADD SP, UT, BP
+LDW UT, (BP)
+ADQ -4, UT
+LDW R0, (UT)
+LDQ 66,UT
+TRP UT
+
+ADQ 4, SP
+LDW BP, (SP)
+ADQ 2, SP
+RTS
+fun_printi_0	ADQ -2, SP
+LDW UT, BP
+STW BP, (SP)
+ADQ -2, SP
+STW UT, (SP)
+ADQ -2, SP
+LDW UT, #4
+ADD SP, UT, BP
+LDW R0, (BP)4
+LDW R1, #10
+ADQ -20, SP
+LDW R10, SP
+ADQ -4, SP
+LDW R9, SP
+ldq 32, r3      // code ASCII de espace (SPace) -> r3
+        ldq 10, UT            // 10 -> wr
+        cmp r1, UT            // charge les indicateurs de b - 10
+        bne NOSIGN-$-2        // si non égal (donc si b != 10) saute en NOSIGN, sinon calcule signe
+        ldq 43, r3    // charge le code ASCII du signe plus + dans r3
+        tst r0                // charge les indicateurs de r0 et donc de i
+        bge POSIT-$-2         // saute en POSIT si i >= 0
+        neg r0, r0            // change le signe de r0
+        ldq 45, r3   // charge le code ASCII du signe moins - dans r3
+POSIT   NOP                   // r3 = code ASCII de signe: SP pour aucun, - ou +
+// convertit l'entier i en chiffres et les empile de droite à gauche
+NOSIGN  ldw r2, r0            // r2 <- r0
+CNVLOOP ldw r0, r2            // r0 <- r2
+        srl r1, r1            // r1 = b/2
+        ani r0, r4, #1        // ANd Immédiate entre r0 et 00...01 vers r4:
+                              // bit n°0 de r0 -> r4; r4 = reste" de r0/2
+        srl r0, r0            // r0 / 2 -> r0
+        div r0, r1, r2        // quotient = r0 / r1 -> r2, reste' = r0 % r1 -> r0
+        shl r0, r0            // r0 = 2 * reste'
+        add r0, r4, r0        // r0 = reste = 2 * reste' + reste" => r0 = chiffre
+        shl r1, r1            // r1 = b
+
+        adq -10, r0           // chiffre - 10 -> r0 
+        bge LETTER-$-2        // saute en LETTER si chiffre >= 10
+        adq 10+48, r0    // ajoute 10 => r0 = chiffre, ajoute code ASCII de 0 
+                              // => r0 = code ASCII de chiffre
+        bmp STKCHR-$-2        // saute en STKCHR 
+
+LETTER  adq 65, r0       // r0 = ASCII(A) pour chiffre = 10, ASCII(B) pour 11 ...
+                              // ajoute code ASCII de A => r = code ASCII de chiffre
+STKCHR  stw r0, -(SP)         // empile code ASCII du chiffre 
+                              // (sur un mot complet pour pas désaligner pile)
+        tst r2                // charge les indicateurs en fonction du quotient ds r2)
+        bne CNVLOOP-$-2       // boucle si quotient non nul; sinon sort
+// recopie les caractères dans le tampon dans le bon ordre: de gauche à droite
+        ldw r1, R10    // r1 pointe sur le début du tampon déjà alloué 
+        stb r3, (r1)+         // copie le signe dans le tampon
+CPYLOOP ldw r0, (SP)+         // dépile code du chiffre gauche (sur un mot) dans r0
+        stb r0, (r1)+         // copie code du chiffre dans un Byte du tampon de gauche à droite
+        cmp SP, R9           // compare sp et sa valeur avant empilement des caractères qui était bp
+        bne CPYLOOP-$-2       // boucle s'il reste au moins un chiffre sur la pile
+        ldq 0, r0           // charge le code du caractère NUL dans r0
+        stb r0, (r1)+         // sauve code NUL pour terminer la chaîne de caractères
+LDW R0, #-4
+ADD BP, R0, SP
+LDW R0, R10
+LDQ 66, UT
+TRP UT
+
+ADQ 4, SP
+LDW BP, (SP)
+ADQ 2, SP
+RTS
+
+

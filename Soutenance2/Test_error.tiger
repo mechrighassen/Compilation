@@ -1,0 +1,115 @@
+//TODO problème des doublons
+
+let
+
+//On définit quelques choses correctes pour faire des tests...
+
+type pointArray = array of coordonne
+type coordonne = { x : int, y : int}
+
+var x := 0
+var y : int := x
+
+var i : int := 4
+
+var point := coordonne { x = 0, y = 0}
+var ligne : pointArray := pointArray [5] of nil
+
+var name := "dav"
+
+function fois(a : int, b : int) : int = a*b
+
+
+
+// TESTS RELATIFS AUX TYPES
+
+type entier = int
+type entier = number // entier déjà utilisé et number non trouvé
+
+type intArray = array of number // number non trouvé
+
+type nom_prenom = {a : int, a : number} //deux fois a et un number non trouvé
+
+//Cycle
+type integer = nombre
+type nombre = integer
+
+
+// TESTS RELATIFS AUX TYPES
+
+
+// TESTS RELATIFS AUX DEFINITIONS DE FONCTIONS
+
+function plus (a : int, b : number) : int = () // number non trouvé ; type de retour void mais int voulu
+												// 
+
+function plus (a : int, a : int) : number = 1 // plus déjà utilisé ; deux fois le paramètre a ; number non trouvé
+
+// TESTS RELATIFS AUX DEFINITIONS DE FONCTIONS
+
+
+// TESTS RELATIFS AUX DEFINITIONS DE VARIABLES, INSTANCIATION D'ARRAY ET DE RECORD
+
+var a : string := 1 // attendu string trouvé int.
+
+var a : int := nil // a déjà utilisé et on a nil alors qu'on a pas un record
+
+var faux_tab := entier [4] of 4 // entier n'est pas un type de tableau
+var faux_faux := pointArray ["lo"] of 4 // on a un tableau de record donc 4 n'est pas un bon type ; index "lo"
+
+var faux_rec := entier { x = 4, y = 3} // entier n'est pas un record
+
+var faux := coordonne { a = 4, b = 4} // a et b ne sont pas des champs
+var faux2 := coordonne { x = "la", y = 3} // x est de type int
+var faux3 := coordonne { x = 3 } // mauvais nombre de champ
+
+// TESTS RELATIFS AUX DEFINITIONS DE VARIABLES
+
+in 
+
+// TESTS RELATIFS AUX OPERATIONS
+
+ligne.y := 4; //ligne n'est pas un record
+point[4]; // point n'est pas un tableau
+ligne[point].z := 0; // point n'est pas un entier et z n'est pas dans le record de type coordonne
+
+x := 1+1+"la"; // expect string to be int
+y := point.x*point; // expect coordonne to be int
+
+x := "la" < 1; //incorrect types
+
+x:= -point; // negation ne s'applique pas à autre chose qu'entier
+
+x:= ligne = nil; //ligne n'est pas un record donc on ne peut pas le comparer à nil
+
+entier := entier + 1; //entier doit être une variable deux fois : à gauche et à droite
+
+// TESTS RELATIFS AUX OPERATIONS
+
+
+// TESTS RELATIFS AUX APPELS DE FONCTIONS
+
+x := fois(1);  // fois a besoin de 2 paramètres
+
+fois(1, name); //on a string mais on voulait int
+
+x(1,2); //x n'est pas une fonction
+
+name := fois(x+y, 2); //on a int mais on voulait string (car fois renvoit int)
+
+// TESTS RELATIFS AUX APPELS DE FONCTIONS
+
+
+// TESTS RELATIFS AUX BLOCS
+
+for i := "lo" to "la" do x; // doit être void, start et end doivent être integer
+
+while ligne do point; // doit être void, condition doit être integer
+
+if ligne then 3; //ligne doit être entier ; then doit être void
+
+if x then 4 else point //then et else doivent avoir le même type
+
+// TESTS RELATIFS AUX BLOCS
+
+end

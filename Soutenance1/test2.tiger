@@ -1,0 +1,44 @@
+ let
+	var resultat : int := 0
+
+ 	function puissance ( a : int , b : int ) : int =
+ 	let
+ 		var i := 0
+ 		var resultat := 0
+ 	in
+ 		if b = 0 then
+ 			1
+ 		else
+ 		(
+ 			i := 1;
+ 			resultat := a ;
+ 			while i < b do
+ 			(
+ 				resultat := resultat * a ;
+ 				i := i + 1
+ 			);
+ 			resultat
+ 		)
+ 	end
+
+ 	function factorielle ( n : int ) =
+ 	let
+ 		var i := 1
+ 	in
+ 		if n = 0 then
+ 			(resultat := 1)
+ 		else
+ 		(
+ 			resultat := 1;
+ 			while i <= n do
+ 			(
+ 				resultat := resultat * i ;
+ 				i = i + 1
+ 			)
+ 		)
+ 	end
+in
+	print ( puissance (3 ,3) ) ;
+	factorielle (5) ;
+	print ( resultat )
+end

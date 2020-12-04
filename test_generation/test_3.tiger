@@ -1,0 +1,13 @@
+let
+	var i:=1
+	var j:=2
+	var access :=0
+	var modif :=0
+in
+	access:=i;
+	printi(access);
+	access:=j;
+	printi(access);
+	modif:=modif+1;
+	printi(modif)
+end

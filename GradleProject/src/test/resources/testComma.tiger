@@ -1,0 +1,8 @@
+let
+var i := 0
+in
+print(i);
+print(i); // il crée un noeud end comme un fils du noeud let
+end
+
+//line 6:0 no viable alternative at input 'end'

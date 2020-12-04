@@ -1,0 +1,6 @@
+let 
+var x:= a+b+c+d
+in
+a+b+c
+//comment 1
+end
